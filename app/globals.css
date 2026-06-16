@@ -1,0 +1,100 @@
+@import "tailwindcss";
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+
+  /* ----------------------------------------------------------------------
+     PRIMARY ACCENT — the single source of truth for selector-forge's accent
+     color. Everything acid-colored on the page resolves to this one value:
+     the `ACID` token in shared/tokens.ts is `var(--forge-primary)`, and the
+     translucent acid glows below derive from it via color-mix(). Change this
+     one line to retheme the whole site. (The favicon in app/icon.svg is a
+     baked static asset and does NOT follow this — regenerate it separately.)
+       acid green   #C8FF2E   (default)
+       electric blue #3B82F6 · hot pink #FF2E88 · amber #FFB020 — try-it swatches
+     ---------------------------------------------------------------------- */
+  --forge-primary: #C8FF2E;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+/* ----------------------------------------------------------------------------
+   selector-forge TYPE SCALE — one named step per role so font sizes stop
+   drifting across the landing components (the text counterpart to the box
+   tiers in shared/tokens.ts). Generates `text-<role>` utilities. The four
+   display steps are responsive clamps for the hero/closer headlines; the rest
+   are fixed px. Roles, largest → smallest: title 22 · heading 20 · lead 17 ·
+   body 14 · small 13 · label 12 · badge 11 · micro 10 · nano 9.
+   ---------------------------------------------------------------------------- */
+@theme {
+  --text-nano: 9px;
+  --text-micro: 10px;
+  --text-badge: 11px;
+  --text-label: 12px;
+  --text-small: 13px;
+  --text-body: 14px;
+  --text-lead: 17px;
+  --text-heading: 20px;
+  --text-title: 22px;
+  --text-display: clamp(44px, 4.6vw, 70px);
+  --text-display-ship: clamp(30px, 3.4vw, 42px);
+  --text-display-mobile: clamp(46px, 15vw, 72px);
+  --text-display-ship-mobile: clamp(34px, 11vw, 48px);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* ----------------------------------------------------------------------------
+   selector-forge — global keyframes used by the "Forge — Element & List ·
+   In-Browser" component (these live in the MagicPath canvas's global CSS and
+   are referenced by name from inline styles in the component). Values are
+   copied verbatim from the live canvas so the animations match exactly.
+   ---------------------------------------------------------------------------- */
+@keyframes forge-scroll-bounce {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(4px); }
+}
+@keyframes forgeCaretBlink {
+  0%, 49% { opacity: 1; }
+  50%, 100% { opacity: 0; }
+}
+@keyframes forgeCrosshairPulse {
+  0%, 100% { box-shadow: transparent 0px 0px; }
+  50% { box-shadow: color-mix(in srgb, var(--forge-primary) 55%, transparent) 0px 0px 0px 3px; }
+}
+@keyframes forgeIconPulse {
+  0%, 100% { box-shadow: transparent 0px 0px; }
+  50% { box-shadow: color-mix(in srgb, var(--forge-primary) 50%, transparent) 0px 0px 0px 4px; }
+}
+/* Referenced by name from the "Forge — Browser · Annotated (orange)" and
+   "Forge — Browser Picker" components (verbatim from their canvas globals):
+   the scroll-hint arrow bob, the CLI caret blink, and the toolbar live-dot. */
+@keyframes forgeScrollBounce {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(4px); }
+}
+@keyframes forgeCaret {
+  0%, 49% { opacity: 1; }
+  50%, 100% { opacity: 0; }
+}
+@keyframes forgeBlink {
+  0%, 49% { opacity: 1; }
+  50%, 100% { opacity: 0; }
+}

@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>We stopped letting our coding agent write its own selectors | Selector Forge</title>
+<style>
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: #fdfcfa;
+    color: #1d1a16;
+    font: 17px/1.65 Georgia, 'Times New Roman', serif;
+  }
+  main {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 64px 24px 96px;
+  }
+  .kicker {
+    font: 600 12px/1 -apple-system, 'Helvetica Neue', sans-serif;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #8a8276;
+    margin: 0 0 16px;
+  }
+  h1 {
+    font: 700 38px/1.15 -apple-system, 'Helvetica Neue', sans-serif;
+    letter-spacing: -0.02em;
+    margin: 0 0 8px;
+  }
+  .byline {
+    color: #8a8276;
+    font-size: 15px;
+    margin: 0 0 40px;
+  }
+  h2 {
+    font: 700 24px/1.25 -apple-system, 'Helvetica Neue', sans-serif;
+    letter-spacing: -0.01em;
+    margin: 48px 0 12px;
+  }
+  p { margin: 0 0 20px; }
+  pre {
+    background: #16140f;
+    color: #e8e4da;
+    border-radius: 8px;
+    padding: 16px 20px;
+    overflow-x: auto;
+    font: 13px/1.6 'SF Mono', Menlo, Consolas, monospace;
+    margin: 0 0 20px;
+  }
+  pre .bad { color: #a39c8e; }
+  pre .good { color: #ffffff; font-weight: 600; }
+  pre .hl { color: #f0a05a; }
+  code {
+    font: 0.88em 'SF Mono', Menlo, Consolas, monospace;
+    background: #f0ece4;
+    padding: 1px 5px;
+    border-radius: 4px;
+  }
+  pre code { background: none; padding: 0; }
+  a { color: #b35c1e; }
+  .cta {
+    background: #16140f;
+    color: #fdfcfa;
+    border-radius: 10px;
+    padding: 24px 28px;
+    margin: 40px 0 0;
+  }
+  .cta p { margin: 0 0 12px; }
+  .cta p:last-child { margin: 0; }
+  .cta a { color: #f0a05a; }
+</style>
+</head>
+<body>
+<main>
+  <h1>We stopped letting our coding agent write its own selectors</h1>
+  <p class="byline">Ahmad Ilaiwi · Intuned · Introducing Selector Forge</p>
+
+  <p>We build <a href="https://intunedhq.com/docs">Intuned</a>, and at its core is a coding agent that writes and maintains browser automations. The code it writes is good. The selectors were the weak spot, and not in the way you'd expect. They <em>looked</em> right. A bad selector and a good one are nearly identical on the page; the difference only shows up later, when one of them quietly starts matching the wrong element. The agent couldn't see that coming any better than a person can.</p>
+
+  <p>And fixing them was no easier. The error was clear, but agents in general can't land on a working selector without rounds of trial and error against the page, each test another tool call piling useless output into their context.</p>
+
+  <p>Better prompting barely helped, because writing automation code and picking a reliable selector are two different jobs. So we split them: the agent decides <em>what</em> it wants to grab, and a separate tool decides <em>how</em> to grab it. That tool is now the engine behind Selector Forge. Point it at an element and you get a selector built on the rules below, applied for you instead of by hand.</p>
+
+  <h2>What we taught it to look for</h2>
+
+  <p>DevTools' Copy Selector and the pickers on the Chrome Store all work the same way: walk up the page and grab whatever's there. They can't tell a meaningful anchor from a throwaway one, so they keep everything:</p>
+
+  <pre><code class="bad">#block-symsoft-content &gt; div &gt; main &gt; div.field.field--name-dynamic-block-fieldnode-solicitation-fields-block.field--type-ds.field--label-hidden.field__item &gt; div &gt; div &gt; div &gt; div &gt; div &gt; div &gt; div &gt; dl &gt; <span class="hl">div:nth-child(1)</span> &gt; dd</code></pre>
+
+  <p>What bit us most was the throwaway stuff baked right in: a random id like <code>widget-12i4a3</code>, or styling classes like <code>.flex</code>, <code>.text-12</code>, <code>.font-bold</code>, the Tailwind soup that's all over the modern web. Those describe how the element <em>looked</em> the day you clicked it, not what it is. The next deploy changes the id, a restyle drops the class, and the selector is dead while the element hasn't moved an inch.</p>
+
+  <p>A good selector keeps only what means something:</p>
+
+  <p><strong>Anchor to what a human chose.</strong> <code>data-testid="login-button"</code> is real; <code>widget-12i4a3</code> is generated and <code>.font-bold</code> is decoration. Telling them apart is most of the job.</p>
+
+  <p><strong>Anchor to the label and you can trust the result.</strong> This is the one I care about most. That element above sits next to a label that says "Solicitation Type," so anchor to the label:</p>
+
+  <pre><code class="good">//dt[normalize-space()='Solicitation Type']/following-sibling::dd</code></pre>
+
+  <p>Now I <em>know</em> what comes out: the value beside "Solicitation Type," not "whatever's in the first row today." The old version still returns something after the page changes, just the wrong thing, with no warning. This one returns the right value or nothing at all. When you're feeding data somewhere, that's the whole point.</p>
+
+  <p><strong>Keep it minimal.</strong> No positions, no long chains, no extra classes. On Hacker News the right selector for a story link is just <code>.titleline &gt; a</code>, buried in the nine-hop chain Copy Selector gives you.</p>
+
+  <p><strong>Make it work across pages.</strong> A selector for "the price" should work on every product page, not the one you're on. Check it against a few, which is also what makes lists work: pick one item and the question becomes "what do these have in common," not "what positions were they in today."</p>
+
+  <p>Those four are the whole job, and they're exactly what Selector Forge does on every pick.</p>
+
+  <h2>From internal tool to extension</h2>
+
+  <p>The engine fixed the agent. Our Forward Deployed Engineers, the ones building customer automations every day, saw it working there and asked for it themselves, so we wrapped it in a small extension. They know what a reliable selector is worth, and it became their first move whenever they work a page directly: debugging a run, scoping a new site, checking a case the agent flagged. That's when we decided to ship it.</p>
+
+  <h2>Where this is useful (and where it's going)</h2>
+
+  <p>Reliable selectors matter anywhere you drive a browser instead of calling an API. Scraping is the obvious case, but it's the same job when you build an integration on a service that has no API, wrap an old internal tool as a clean endpoint, or automate something a vendor never exposed. Turning sites into APIs is most of what we do at Intuned. It helps with tests that shouldn't break on a refactor, and even with CSS, for styling pages you don't control. In all of them, quietly grabbing the wrong element is the nightmare, and a selector you trust is the fix.</p>
+
+  <p>The use we're most excited about is the one that started this: <strong>AI agents</strong>. Selectors are how an agent holds onto the web, and every coding agent doing browser automation today is doing it the way ours used to. So we're bringing Selector Forge to that world: a CLI that lets your agent ask a real browser for a reliable selector instead of guessing from a snapshot, alongside tools like <a href="https://intunedhq.com/docs">agent-browser</a>. More on that soon.</p>
+
+  <h2>Selector Forge</h2>
+
+  <p>Pick an element, get a selector you can build on. Pick one item, get the whole list. Free, open source, Chrome and Firefox. Every selector in this post is real, unedited output.</p>
+
+  <div class="cta">
+    <p><strong>Selector Forge</strong>: pick an element, get a selector you can build on.</p>
+    <p><a href="https://github.com/intunedhq/selector-forge">github.com/intunedhq/selector-forge</a> · Add to Chrome · Add to Firefox</p>
+  </div>
+</main>
+</body>
+</html>
