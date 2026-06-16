@@ -1,36 +1,66 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Selector Forge — landing page
 
-## Getting Started
+Marketing site for **Selector Forge**, a Chrome & Firefox extension that generates
+selectors which are stress-tested against the page and certified before you ever
+see them. _Forged, not copied._
 
-First, run the development server:
+The centerpiece is a single, scroll-driven "in-browser" hero that scrubs through the
+product story as you scroll — **PICK** an element → generalize to the whole **LIST** →
+**SHIP** the result — all rendered as one continuous animation driven by a single
+scroll-progress value.
+
+## Tech stack
+
+- [Next.js 16](https://nextjs.org) (App Router, Turbopack) + [React 19](https://react.dev)
+- [Tailwind CSS v4](https://tailwindcss.com) (configured via `@theme` in `app/globals.css`)
+- TypeScript
+- [Ladle](https://ladle.dev) for isolated component previews
+
+## Getting started
 
 ```bash
-npm run dev
-# or
+yarn install
 yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000). Edit `app/page.tsx` to change what renders.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+| Script | What it does |
+| --- | --- |
+| `yarn dev` | Next dev server (Turbopack) |
+| `yarn build` / `yarn start` | Production build / serve |
+| `yarn lint` | ESLint |
+| `yarn ladle` | Component previews at [http://localhost:61000](http://localhost:61000) |
+| `yarn ladle:build` / `yarn ladle:preview` | Static Ladle build / serve it |
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Project structure
 
-## Learn More
+```
+app/                                  Next App Router (page, layout, globals.css, favicon assets)
+components/magicpath/
+  forge-element-list-in-browser/      the live hero
+    ForgeElementListInBrowser.tsx     root: LeftColumn (manifesto) + RightColumn (scroll stage)
+    components/                        RightColumn, browser mock, popup, ship stage, logo, …
+    components/mobile/                 phone-width retellings of the same beats
+    shared/                            tokens, constants, math, page data
+*.stories.tsx                         co-located Ladle stories
+```
 
-To learn more about Next.js, take a look at the following resources:
+The scroll engine lives in `RightColumn.tsx`: a single `p` (0→1) progress value, eased
+from a global wheel/scroll listener, drives every child — no per-element scroll math.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Design system
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- **One accent, swappable from one place.** The primary accent is the CSS variable
+  `--forge-primary` in `app/globals.css` (acid green by default). The `ACID` token in
+  `shared/tokens.ts` is `var(--forge-primary)`, and translucent tints derive from it via
+  `color-mix()` — change that one line to retheme the whole site. Everything else is
+  ink (`#0B0B0B`), white, and neutral greys. Keep it a single accent.
+- **Brutalist boxes.** Hard offset shadows, 2px borders, square corners, uppercase mono.
+- **Brand mark.** The anvil (forge → "Forged, not copied"). Favicon assets live in `app/`
+  (`icon.svg`, `favicon.ico`, `apple-icon.png`); standalone tiles are in `public/`
+  (`forge-icon-24.svg` and a knockout `forge-icon-24-cutout.svg`). The recolorable
+  `ForgeMark` / `ForgeIcon` components are in `components/.../components/ForgeLogo.tsx`.
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+> The `.claude` ⇄ `.agents` and `CLAUDE.md` ⇄ `AGENTS.md` symlinks are recreated by the
+> `postinstall` script.
