@@ -1,7 +1,9 @@
 'use client';
 
 import React, { useState } from 'react';
-import { ACID, MONO, HEAD, BODY, GITHUB, TIER_CTA } from '../shared/tokens';
+import { ACID, MONO, HEAD, BODY, GITHUB, BLOG, TIER_CTA } from '../shared/tokens';
+import { useInstallTarget } from '../shared/useInstallTarget';
+import { captureWaitlistSignup } from '../shared/waitlist';
 import { clamp, lerp, seg } from '../shared/math';
 import { SHIP_A } from '../shared/constants';
 
@@ -55,6 +57,7 @@ const ShipStage: React.FC<{
   const [email, setEmail] = useState('');
   const [sent, setSent] = useState(false);
   const [pressed, setPressed] = useState(false);
+  const install = useInstallTarget();
   return <div style={{
     width: '100%',
     maxWidth: 620,
@@ -208,7 +211,7 @@ const ShipStage: React.FC<{
       gap: 12,
       marginBottom: 16
     }}>
-        <a href={GITHUB} target="_blank" rel="noreferrer" onMouseDown={() => setPressed(true)} onMouseUp={() => setPressed(false)} onMouseLeave={() => setPressed(false)} className="inline-flex items-center justify-center select-none" style={{
+        <a href={install.href} target="_blank" rel="noreferrer" onMouseDown={() => setPressed(true)} onMouseUp={() => setPressed(false)} onMouseLeave={() => setPressed(false)} className="inline-flex items-center justify-center select-none" style={{
         background: '#000',
         color: '#fff',
         fontFamily: BODY,
@@ -222,7 +225,7 @@ const ShipStage: React.FC<{
         transition: 'box-shadow 0.08s ease, transform 0.08s ease',
         whiteSpace: 'nowrap'
       }}>
-          Add to Chrome
+          {install.label}
         </a>
         <a href={GITHUB} target="_blank" rel="noreferrer" className="sf-ghost2 inline-flex items-center justify-center select-none" style={{
         background: '#fff',
@@ -287,7 +290,10 @@ const ShipStage: React.FC<{
 
         <form onSubmit={e => {
         e.preventDefault();
-        if (email.trim()) setSent(true);
+        const value = email.trim();
+        if (!value) return;
+        captureWaitlistSignup(value);
+        setSent(true);
       }} className="flex flex-wrap items-center" style={{
         gap: 12
       }}>
@@ -331,7 +337,7 @@ const ShipStage: React.FC<{
         }}>
               ✓ you're on the list
             </div>}
-          <a href={GITHUB + '#readme'} target="_blank" rel="noreferrer" className="sf-blog2 text-small" style={{
+          <a href={BLOG} target="_blank" rel="noreferrer" className="sf-blog2 text-small" style={{
           fontFamily: MONO,
           fontWeight: 700,
           color: '#000',

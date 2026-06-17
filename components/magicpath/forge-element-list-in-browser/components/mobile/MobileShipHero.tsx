@@ -1,7 +1,9 @@
 'use client';
 
 import React, { useState } from 'react';
-import { ACID, INK, MONO, HEAD, BODY, GITHUB, TIER_CTA } from '../../shared/tokens';
+import { ACID, INK, MONO, HEAD, BODY, GITHUB, BLOG, TIER_CTA } from '../../shared/tokens';
+import { useInstallTarget } from '../../shared/useInstallTarget';
+import { captureWaitlistSignup } from '../../shared/waitlist';
 
 /* ============================================================================
    MOBILE SHIP HERO — the closing hero. Mirrors the desktop ShipStage in full
@@ -24,6 +26,7 @@ const UseCaseCard: React.FC<{ index: string; title: string; children: React.Reac
 );
 
 export const MobileShipHero: React.FC = () => {
+  const install = useInstallTarget();
   const [email, setEmail] = useState('');
   const [sent, setSent] = useState(false);
   const dotGrid: React.CSSProperties = {
@@ -82,8 +85,8 @@ export const MobileShipHero: React.FC = () => {
 
       {/* CTA row (side by side, wraps if tight) */}
       <div className="flex flex-wrap items-center gap-3" style={{ marginBottom: 18 }}>
-        <a href={GITHUB} target="_blank" rel="noreferrer" className="inline-flex items-center justify-center" style={{ background: '#000', color: '#fff', fontFamily: BODY, fontWeight: 700, fontSize: TIER_CTA.font, padding: '13px 20px', textDecoration: 'none', border: '2px solid #000', boxShadow: `${TIER_CTA.shadow}px ${TIER_CTA.shadow}px 0 0 ${ACID}` }}>
-          Add to Chrome
+        <a href={install.href} target="_blank" rel="noreferrer" className="inline-flex items-center justify-center" style={{ background: '#000', color: '#fff', fontFamily: BODY, fontWeight: 700, fontSize: TIER_CTA.font, padding: '13px 20px', textDecoration: 'none', border: '2px solid #000', boxShadow: `${TIER_CTA.shadow}px ${TIER_CTA.shadow}px 0 0 ${ACID}` }}>
+          {install.label}
         </a>
         <a href={GITHUB} target="_blank" rel="noreferrer" className="inline-flex items-center justify-center" style={{ background: '#fff', color: '#000', fontFamily: BODY, fontWeight: 600, fontSize: TIER_CTA.font, padding: '12px 18px', textDecoration: 'none', border: '2px solid #000' }}>
           View on GitHub →
@@ -100,7 +103,7 @@ export const MobileShipHero: React.FC = () => {
           Drive it from your terminal: <code style={{ fontFamily: MONO, fontWeight: 700, color: '#000' }}>npx intuned forge pick</code>
         </div>
 
-        <form onSubmit={(e) => { e.preventDefault(); if (email.trim()) setSent(true); }} className="flex flex-col gap-3">
+        <form onSubmit={(e) => { e.preventDefault(); const value = email.trim(); if (!value) return; captureWaitlistSignup(value); setSent(true); }} className="flex flex-col gap-3">
           {!sent ? (
             <div className="flex items-stretch" style={{ border: '2px solid #000', background: '#fff', boxShadow: '3px 3px 0 0 #000' }}>
               <input
@@ -122,7 +125,7 @@ export const MobileShipHero: React.FC = () => {
               {"✓ you're on the list"}
             </div>
           )}
-          <a href={GITHUB + '#readme'} target="_blank" rel="noreferrer" className="text-small" style={{ fontFamily: MONO, fontWeight: 700, color: '#000', textDecoration: 'underline', textUnderlineOffset: 3 }}>
+          <a href={BLOG} target="_blank" rel="noreferrer" className="text-small" style={{ fontFamily: MONO, fontWeight: 700, color: '#000', textDecoration: 'underline', textUnderlineOffset: 3 }}>
             Why Static Selectors Fail →
           </a>
         </form>

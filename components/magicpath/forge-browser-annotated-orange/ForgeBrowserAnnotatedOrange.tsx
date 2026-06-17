@@ -187,7 +187,7 @@ const LeftColumn: React.FC = () => {
         gap: 14,
         paddingTop: 2
       }}>
-          <a href="https://github.com/intunedhq/selector-forge" target="_blank" rel="noreferrer" onMouseDown={() => setPressed(true)} onMouseUp={() => setPressed(false)} onMouseLeave={() => setPressed(false)} className="inline-flex items-center justify-center select-none" style={{
+          <a href="https://github.com/Intuned/selector-forge" target="_blank" rel="noreferrer" onMouseDown={() => setPressed(true)} onMouseUp={() => setPressed(false)} onMouseLeave={() => setPressed(false)} className="inline-flex items-center justify-center select-none" style={{
           background: '#000',
           color: '#fff',
           fontFamily: BODY,
@@ -204,7 +204,7 @@ const LeftColumn: React.FC = () => {
             
             Add to Chrome
           </a>
-          <a href="https://github.com/intunedhq/selector-forge" target="_blank" rel="noreferrer" className="sf-ghost inline-flex items-center justify-center select-none" style={{
+          <a href="https://github.com/Intuned/selector-forge" target="_blank" rel="noreferrer" className="sf-ghost inline-flex items-center justify-center select-none" style={{
           background: '#fff',
           color: '#000',
           fontFamily: BODY,
@@ -1682,7 +1682,7 @@ const EndingOverlay: React.FC<{
         gap: 12,
         marginBottom: 16
       }}>
-          <a href="https://github.com/intunedhq/selector-forge" target="_blank" rel="noreferrer" onMouseDown={() => setPressed(true)} onMouseUp={() => setPressed(false)} onMouseLeave={() => setPressed(false)} className="inline-flex items-center justify-center select-none" style={{
+          <a href="https://github.com/Intuned/selector-forge" target="_blank" rel="noreferrer" onMouseDown={() => setPressed(true)} onMouseUp={() => setPressed(false)} onMouseLeave={() => setPressed(false)} className="inline-flex items-center justify-center select-none" style={{
           background: '#000',
           color: '#fff',
           fontFamily: BODY,
@@ -1699,7 +1699,7 @@ const EndingOverlay: React.FC<{
             
             Add to Chrome
           </a>
-          <a href="https://github.com/intunedhq/selector-forge" target="_blank" rel="noreferrer" className="sf-ghost2 inline-flex items-center justify-center select-none" style={{
+          <a href="https://github.com/Intuned/selector-forge" target="_blank" rel="noreferrer" className="sf-ghost2 inline-flex items-center justify-center select-none" style={{
           background: '#fff',
           color: '#000',
           fontFamily: BODY,
@@ -1824,7 +1824,7 @@ const EndingOverlay: React.FC<{
               
                 ✓ you're on the list
               </div>}
-            <a href="https://github.com/intunedhq/selector-forge#readme" target="_blank" rel="noreferrer" className="sf-blog2" style={{
+            <a href="https://github.com/Intuned/selector-forge#readme" target="_blank" rel="noreferrer" className="sf-blog2" style={{
             fontFamily: MONO,
             fontWeight: 700,
             fontSize: 12,

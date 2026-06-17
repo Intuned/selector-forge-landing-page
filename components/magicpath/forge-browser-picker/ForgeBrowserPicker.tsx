@@ -170,7 +170,7 @@ export const LeftColumn: React.FC = () => {
         {/* CTA row */}
         <div className="flex flex-wrap items-center gap-4 pt-1">
           <AddToChrome />
-          <a href="https://github.com/intunedhq/selector-forge" target="_blank" rel="noreferrer" className="inline-flex items-center px-5 py-3 transition-transform" style={{
+          <a href="https://github.com/Intuned/selector-forge" target="_blank" rel="noreferrer" className="inline-flex items-center px-5 py-3 transition-transform" style={{
           border: `2px solid ${BLACK}`,
           backgroundColor: '#fff',
           fontFamily: "'Archivo', sans-serif",
@@ -204,7 +204,7 @@ export const LeftColumn: React.FC = () => {
 };
 const AddToChrome: React.FC = () => {
   const [pressed, setPressed] = useState(false);
-  return <a href="https://github.com/intunedhq/selector-forge" target="_blank" rel="noreferrer" onMouseDown={() => setPressed(true)} onMouseUp={() => setPressed(false)} onMouseLeave={() => setPressed(false)} className="inline-flex items-center gap-2 px-5 py-3 text-white" style={{
+  return <a href="https://github.com/Intuned/selector-forge" target="_blank" rel="noreferrer" onMouseDown={() => setPressed(true)} onMouseUp={() => setPressed(false)} onMouseLeave={() => setPressed(false)} className="inline-flex items-center gap-2 px-5 py-3 text-white" style={{
     backgroundColor: BLACK,
     fontFamily: "'Archivo', sans-serif",
     fontWeight: 600,
@@ -1255,7 +1255,7 @@ const ClosingPanel: React.FC<{
 
       {/* CTAs */}
       <div className="flex items-center gap-3">
-        <a href="https://github.com/intunedhq/selector-forge" target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 px-5 py-2.5" style={{
+        <a href="https://github.com/Intuned/selector-forge" target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 px-5 py-2.5" style={{
         backgroundColor: ACID,
         border: `2px solid ${BLACK}`,
         fontFamily: "'Archivo', sans-serif",
@@ -1266,7 +1266,7 @@ const ClosingPanel: React.FC<{
           
           Add to Chrome
         </a>
-        <a href="https://github.com/intunedhq/selector-forge" target="_blank" rel="noreferrer" className="inline-flex items-center px-5 py-2.5" style={{
+        <a href="https://github.com/Intuned/selector-forge" target="_blank" rel="noreferrer" className="inline-flex items-center px-5 py-2.5" style={{
         border: `2px solid ${BLACK}`,
         backgroundColor: '#fff',
         fontFamily: "'Archivo', sans-serif",
@@ -1336,7 +1336,7 @@ const ClosingPanel: React.FC<{
         </div>}
 
       {/* blog link */}
-      <a href="https://github.com/intunedhq/selector-forge" target="_blank" rel="noreferrer" style={{
+      <a href="https://github.com/Intuned/selector-forge" target="_blank" rel="noreferrer" style={{
       fontFamily: "'Archivo', sans-serif",
       fontSize: 13,
       color: '#374151',
