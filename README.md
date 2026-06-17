@@ -33,6 +33,21 @@ Open [http://localhost:3000](http://localhost:3000). Edit `app/page.tsx` to chan
 | `yarn ladle` | Component previews at [http://localhost:61000](http://localhost:61000) |
 | `yarn ladle:build` / `yarn ladle:preview` | Static Ladle build / serve it |
 
+## Environment variables
+
+Analytics is [PostHog](https://posthog.com), wired client-side (the site is a static
+export, so there's no server runtime). Copy `.env.example` to `.env.local` and fill in:
+
+| Variable | Required | Description |
+| --- | --- | --- |
+| `NEXT_PUBLIC_POSTHOG_KEY` | to enable tracking | Project API key. **Leave blank to keep analytics dormant** — the site runs fine unconfigured (local dev / previews), it just captures nothing. |
+| `NEXT_PUBLIC_POSTHOG_HOST` | no | Ingestion endpoint. Defaults to US cloud (`https://us.i.posthog.com`); use `https://eu.i.posthog.com` for EU cloud. |
+
+Both must keep the `NEXT_PUBLIC_` prefix so they inline into the client bundle. PostHog
+auto-captures UTM params (`utm_campaign`, …) from the URL, and the "GET NOTIFIED" forms
+fire a `cli_waitlist_signup` event + identify the person by email — so waitlist signups
+can be broken down by campaign in PostHog.
+
 ## Project structure
 
 ```

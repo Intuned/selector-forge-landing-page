@@ -9,9 +9,16 @@ const INK = '#0B0B0B';
 const MONO = "'Space Mono', monospace";
 const HEAD = "'Bricolage Grotesque', sans-serif";
 const BODY = "'Archivo', sans-serif";
-const GITHUB = 'https://github.com/intunedhq/selector-forge';
+const GITHUB = 'https://github.com/Intuned/selector-forge';
+// Extension store listings. The install CTA swaps between them based on the
+// visitor's browser (see shared/useInstallTarget) — Firefox gets FIREFOX, every
+// other browser gets CHROME.
+const CHROME = 'https://chromewebstore.google.com/detail/selector-forge-ai-selecto/lbendfnlmhdakbeblajoffkfmafbfaha';
+const FIREFOX = 'https://addons.mozilla.org/en-US/firefox/addon/selector-forge/';
 const INTUNED = 'https://intunedhq.com';
 const INTUNED_PRICING = 'https://intunedhq.com/pricing';
+// "Why Static Selectors Fail" deep-dive post.
+const BLOG = 'https://intunedhq.com/blog/selector-forge';
 const SEL_ELEMENT = "//dt[normalize-space()='Solicitation Type']/following-sibling::dd";
 const SEL_LIST = "//div[contains(@class, 'section') and .//h2[normalize-space()='Solicitation Files']]//a[contains(@href, '/files/')]";
 
@@ -36,4 +43,4 @@ const TIER_BADGE = { font: 11, shadow: 2 } as const;
    headline steps). Use those utility classes for font sizes; the button/badge
    tiers above keep their own `font` values for tier-driven labels. */
 
-export { ACID, INK, MONO, HEAD, BODY, GITHUB, INTUNED, INTUNED_PRICING, SEL_ELEMENT, SEL_LIST, TIER_CTA, TIER_CONTROL, TIER_BADGE };
+export { ACID, INK, MONO, HEAD, BODY, GITHUB, CHROME, FIREFOX, INTUNED, INTUNED_PRICING, BLOG, SEL_ELEMENT, SEL_LIST, TIER_CTA, TIER_CONTROL, TIER_BADGE };

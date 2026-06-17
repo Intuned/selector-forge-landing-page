@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import { ACID, MONO, HEAD, BODY, GITHUB, INTUNED, TIER_CTA, TIER_BADGE } from '../shared/tokens';
+import { useInstallTarget } from '../shared/useInstallTarget';
 import { IntunedLogo } from './IntunedLogo';
 import { ForgeMark } from './ForgeLogo';
 import { FreeTierStamp } from './FreeTierStamp';
@@ -23,6 +24,7 @@ const LeftColumn: React.FC<{ vAlign?: VAlign; xAlign?: XAlign }> = ({
   xAlign = 'left'
 }) => {
   const [pressed, setPressed] = useState(false);
+  const install = useInstallTarget();
   const dotGrid: React.CSSProperties = {
     backgroundImage: 'radial-gradient(rgba(0,0,0,0.02) 1.4px, transparent 1.4px)',
     backgroundSize: '18px 18px'
@@ -88,14 +90,14 @@ const LeftColumn: React.FC<{ vAlign?: VAlign; xAlign?: XAlign }> = ({
             </p>
 
             <div className="flex flex-wrap items-center gap-4">
-              <a href={GITHUB} target="_blank" rel="noopener noreferrer" onMouseDown={() => setPressed(true)} onMouseUp={() => setPressed(false)} onMouseLeave={() => setPressed(false)} className="inline-flex select-none items-center bg-black px-6 py-3 text-white transition-all duration-100" style={{
+              <a href={install.href} target="_blank" rel="noopener noreferrer" onMouseDown={() => setPressed(true)} onMouseUp={() => setPressed(false)} onMouseLeave={() => setPressed(false)} className="inline-flex select-none items-center bg-black px-6 py-3 text-white transition-all duration-100" style={{
               fontFamily: BODY,
               fontWeight: 600,
               fontSize: `${TIER_CTA.font}px`,
               boxShadow: pressed ? '0 0 0 0 ' + ACID : `${TIER_CTA.shadow}px ${TIER_CTA.shadow}px 0 0 ${ACID}`,
               transform: pressed ? 'translate(2px, 2px)' : 'translate(0,0)'
             }}>
-                Add to Chrome
+                {install.label}
               </a>
               <a href={GITHUB} target="_blank" rel="noopener noreferrer" className="group inline-flex items-center border-2 border-black bg-white px-6 py-3 text-black transition-colors duration-150 hover:bg-black hover:text-white" style={{
               fontFamily: BODY,

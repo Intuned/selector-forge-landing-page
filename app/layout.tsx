@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { AgentationDevTools } from "@/components/dev/AgentationDevTools";
+import { PostHogProvider } from "@/components/providers";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -46,7 +47,7 @@ export default function RootLayout({
         <link rel="stylesheet" href={FORGE_FONTS_HREF} />
       </head>
       <body className="min-h-full flex flex-col">
-        {children}
+        <PostHogProvider>{children}</PostHogProvider>
         {/* Dev-only visual-feedback toolbar; renders null in production. */}
         <AgentationDevTools />
       </body>

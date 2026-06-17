@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { ACID, INK, MONO, HEAD, BODY, GITHUB, INTUNED_PRICING, TIER_CTA, TIER_BADGE } from '../../shared/tokens';
+import { useInstallTarget } from '../../shared/useInstallTarget';
 import { ForgeMark } from '../ForgeLogo';
 
 /* ============================================================================
@@ -34,6 +35,7 @@ const Stamp: React.FC<{ bg: string; text: string; children: React.ReactNode }> =
 );
 
 export const MobileHero: React.FC = () => {
+  const install = useInstallTarget();
   const dotGrid: React.CSSProperties = {
     backgroundImage: 'radial-gradient(rgba(0,0,0,0.02) 1.4px, transparent 1.4px)',
     backgroundSize: '18px 18px',
@@ -91,13 +93,13 @@ export const MobileHero: React.FC = () => {
 
       <div className="flex flex-wrap items-center gap-3" style={{ marginTop: 26 }}>
         <a
-          href={GITHUB}
+          href={install.href}
           target="_blank"
           rel="noopener noreferrer"
           className="inline-flex items-center justify-center bg-black text-white"
           style={{ fontFamily: BODY, fontWeight: 700, fontSize: TIER_CTA.font, padding: '13px 20px', border: `2px solid ${INK}`, boxShadow: `${TIER_CTA.shadow}px ${TIER_CTA.shadow}px 0 0 ${ACID}` }}
         >
-          Add to Chrome
+          {install.label}
         </a>
         <a
           href={GITHUB}
