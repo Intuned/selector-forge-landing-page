@@ -1,8 +1,7 @@
 'use client';
 
 import React from 'react';
-import { ACID, INK, MONO, HEAD, BODY, GITHUB, INTUNED_PRICING, TIER_CTA, TIER_BADGE } from '../../shared/tokens';
-import { useInstallTarget } from '../../shared/useInstallTarget';
+import { ACID, INK, MONO, HEAD, BODY, GITHUB, CHROME, FIREFOX, INTUNED_PRICING, TIER_CTA, TIER_BADGE } from '../../shared/tokens';
 import { ForgeMark } from '../ForgeLogo';
 
 /* ============================================================================
@@ -10,32 +9,41 @@ import { ForgeMark } from '../ForgeLogo';
    brand language as the desktop LeftColumn, content vertically centered in a
    100svh column, with a "see it work ↓" scroll hint. Matches the prototype.
    ============================================================================ */
-const Stamp: React.FC<{ bg: string; text: string; children: React.ReactNode }> = ({
+const Stamp: React.FC<{ bg: string; text: string; href?: string; children: React.ReactNode }> = ({
   bg,
   text,
+  href,
   children,
-}) => (
-  <span
-    className="inline-flex items-center"
-    style={{
-      background: bg,
-      color: text,
-      border: `2px solid ${INK}`,
-      boxShadow: `${TIER_BADGE.shadow}px ${TIER_BADGE.shadow}px 0 0 ${INK}`,
-      padding: '4px 9px',
-      fontFamily: MONO,
-      fontWeight: 700,
-      fontSize: TIER_BADGE.font,
-      letterSpacing: '0.04em',
-      textTransform: 'uppercase',
-    }}
-  >
-    {children}
-  </span>
-);
+}) => {
+  const style: React.CSSProperties = {
+    background: bg,
+    color: text,
+    border: `2px solid ${INK}`,
+    boxShadow: `${TIER_BADGE.shadow}px ${TIER_BADGE.shadow}px 0 0 ${INK}`,
+    padding: '4px 9px',
+    fontFamily: MONO,
+    fontWeight: 700,
+    fontSize: TIER_BADGE.font,
+    letterSpacing: '0.04em',
+    textTransform: 'uppercase',
+  };
+  // With an href the stamp is a real link (Firefox store, GitHub); otherwise a
+  // static badge.
+  if (href) {
+    return (
+      <a href={href} target="_blank" rel="noopener noreferrer" className="inline-flex items-center" style={style}>
+        {children}
+      </a>
+    );
+  }
+  return (
+    <span className="inline-flex items-center" style={style}>
+      {children}
+    </span>
+  );
+};
 
 export const MobileHero: React.FC = () => {
-  const install = useInstallTarget();
   const dotGrid: React.CSSProperties = {
     backgroundImage: 'radial-gradient(rgba(0,0,0,0.02) 1.4px, transparent 1.4px)',
     backgroundSize: '18px 18px',
@@ -64,7 +72,7 @@ export const MobileHero: React.FC = () => {
           margin: '22px 0 0',
         }}
       >
-        Forged,
+        Selectors forged,
         <br />
         not{' '}
         <span className="relative inline-block">
@@ -93,13 +101,13 @@ export const MobileHero: React.FC = () => {
 
       <div className="flex flex-wrap items-center gap-3" style={{ marginTop: 26 }}>
         <a
-          href={install.href}
+          href={CHROME}
           target="_blank"
           rel="noopener noreferrer"
           className="inline-flex items-center justify-center bg-black text-white"
           style={{ fontFamily: BODY, fontWeight: 700, fontSize: TIER_CTA.font, padding: '13px 20px', border: `2px solid ${INK}`, boxShadow: `${TIER_CTA.shadow}px ${TIER_CTA.shadow}px 0 0 ${ACID}` }}
         >
-          {install.label}
+          Add to Chrome
         </a>
         <a
           href={GITHUB}
@@ -114,8 +122,8 @@ export const MobileHero: React.FC = () => {
 
       <div className="flex flex-wrap items-center gap-2.5" style={{ marginTop: 20 }}>
         <Stamp bg={ACID} text="#000">Free Tier</Stamp>
-        <Stamp bg="#fff" text="#000">OPEN SOURCE</Stamp>
-        <Stamp bg="#000" text="#fff">CHROME + FIREFOX</Stamp>
+        <Stamp bg="#fff" text="#000" href={GITHUB}>OPEN SOURCE</Stamp>
+        <Stamp bg="#000" text="#fff" href={FIREFOX}>FIREFOX</Stamp>
       </div>
 
       {/* Touch has no hover, so the desktop "Free Tier" popover can't work here —
