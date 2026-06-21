@@ -17,10 +17,14 @@ import { FreeTierStamp } from './FreeTierStamp';
    ============================================================================ */
 type VAlign = 'spread' | 'top';
 type XAlign = 'left' | 'center';
+// Where the black separator rule sits: 'right' for the side-by-side desktop
+// column (default), 'bottom' for the stacked narrow-desktop hero, 'none' to omit.
+type Divider = 'right' | 'bottom' | 'none';
 
-const LeftColumn: React.FC<{ vAlign?: VAlign; xAlign?: XAlign }> = ({
+const LeftColumn: React.FC<{ vAlign?: VAlign; xAlign?: XAlign; divider?: Divider }> = ({
   vAlign = 'spread',
-  xAlign = 'left'
+  xAlign = 'left',
+  divider = 'right'
 }) => {
   const [pressed, setPressed] = useState(false);
   const dotGrid: React.CSSProperties = {
@@ -35,7 +39,8 @@ const LeftColumn: React.FC<{ vAlign?: VAlign; xAlign?: XAlign }> = ({
   // horizontally; text inside stays left-aligned.
   const blockClass = xAlign === 'center' ? 'mx-auto max-w-[480px]' : '';
   return <div className="relative h-full w-full bg-white overflow-hidden" style={dotGrid}>
-      <div className="absolute top-0 right-0 h-full w-[2px] bg-black" />
+      {divider === 'right' && <div className="absolute top-0 right-0 h-full w-[2px] bg-black" />}
+      {divider === 'bottom' && <div className="absolute bottom-0 left-0 h-[2px] w-full bg-black" />}
       <div className="relative flex h-full flex-col px-8 py-9 xl:px-12 xl:py-12">
         <div className={`flex h-full w-full flex-col ${blockClass}`}>
           <div>

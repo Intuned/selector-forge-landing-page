@@ -1,4 +1,5 @@
 import { ForgeElementListInBrowser } from "@/components/magicpath/forge-element-list-in-browser/ForgeElementListInBrowser";
+import { StackedDesktopLanding } from "@/components/magicpath/forge-element-list-in-browser/components/StackedDesktopLanding";
 import { MobileLanding } from "@/components/magicpath/forge-element-list-in-browser/components/mobile/MobileLanding";
 
 export default function Home() {
@@ -8,8 +9,13 @@ export default function Home() {
       <div className="hidden lg:block">
         <ForgeElementListInBrowser />
       </div>
-      {/* Mobile (< lg): a stacked, normal-scrolling landing. */}
-      <div className="lg:hidden">
+      {/* Narrow desktop (md–lg): hero on top, cinematic stacked below it,
+          played on natural document scroll. */}
+      <div className="hidden md:block lg:hidden">
+        <StackedDesktopLanding />
+      </div>
+      {/* Phone (< md): a stacked, normal-scrolling landing. */}
+      <div className="md:hidden">
         <MobileLanding />
       </div>
     </>
